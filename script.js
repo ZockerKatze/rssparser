@@ -1,4 +1,4 @@
-let rssUrl = ""; // put ur rssUrl here!
+let rssUrl = "http://feeds.bbci.co.uk/news/world/rss.xml"; // put ur rssUrl here!
 
 
 function changeRSS(url) {
