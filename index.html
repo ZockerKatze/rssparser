@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="toggle-container">
+        <button class="toggle-button" onclick="toggleTheme()">☀️</button>
+        <select id="week-filter" class="filter-button" onchange="fetchRSS()">
+            <option value="7">Letzte Woche</option>
+            <option value="14">Letzte zwei Wochen</option>
+            <option value="30">Letzter Monat</option>
+            <option value="0">Gesamte Zeit</option>
+        </select>
+    </div>
+    <div class="container">
+        <h1>Neueste Nachrichten</h1>
+        <div id="rss-feed"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
