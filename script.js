@@ -1,5 +1,4 @@
-let rssUrl = "http://feeds.bbci.co.uk/news/world/rss.xml"; // put ur rssUrl here!
-
+let rssUrl = ""; // put your rssUrl here!     
 
 function changeRSS(url) {
     rssUrl = url;
@@ -41,11 +40,10 @@ async function fetchRSS() {
 
         if (!data.contents) {
             console.error("Leere Antwort vom RSS-Feed");
+            showErrorMessage();
             return;
         }
-        
-        //console.log("Rohe RSS-Daten:", data.contents);
-        
+
         const daysFilter = parseInt(document.getElementById("week-filter").value, 10);
         const now = new Date();
 
@@ -68,8 +66,23 @@ async function fetchRSS() {
         });
 
         document.getElementById("rss-feed").innerHTML = html;
+        document.getElementById("error-message").style.display = 'none'; // Hide error message if RSS is loaded
     } catch (error) {
         console.error("Fehler beim Abrufen des RSS-Feeds:", error);
-        document.getElementById("rss-feed").innerHTML = "RSS-Feed konnte nicht geladen werden.";
+        showErrorMessage();
+    }
+}
+
+function showErrorMessage() {
+    document.getElementById("rss-feed").innerHTML = ""; // Clear any previous feed content
+    document.getElementById("error-message").style.display = 'block'; // Show error message and input
+}
+
+function changeRSSFromInput() {
+    const newUrl = document.getElementById("new-rss-url").value;
+    if (newUrl) {
+        changeRSS(newUrl);
+        document.getElementById("new-rss-url").value = ''; // Clear input after change
+        document.getElementById("error-message").style.display = 'none'; // Hide error message
     }
 }

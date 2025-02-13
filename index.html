@@ -19,6 +19,11 @@
     <div class="container">
         <h1>Neueste Nachrichten</h1>
         <div id="rss-feed"></div>
+        <div id="error-message" class="error-message" style="display: none;">
+            <p>RSS-Feed konnte nicht geladen werden. Bitte geben Sie eine neue URL ein:</p>
+            <input type="text" id="new-rss-url" placeholder="Neue RSS-URL">
+            <button onclick="changeRSSFromInput()">URL ändern</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

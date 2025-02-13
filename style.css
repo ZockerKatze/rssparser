@@ -93,7 +93,39 @@ h1 {
     font-size: 16px;
     transition: background 0.3s;
 }
-
 .filter-button:hover {
     background: #ccc;
+}
+
+
+.error-message {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-top: 20px;
+    display: none;
+    background-color: var(--error-bg);
+    color: var(--error-text);
+}
+
+.error-message input {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.error-message button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.error-message button:hover {
+    background-color: var(--button-hover-bg);
 }
