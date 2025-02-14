@@ -30,6 +30,9 @@ I made a Demo with Github Pages it is [here](https://zockerkatze.github.io/rsspa
   
   ```javascript
   let rssUrl = ""; // Add your RSS feed URL here
+
+- **Url Input Window**: I added a window that automatically sets the rssUrl to your input
+
 ### Theming: 
 You can modify the CSS variables in style.css to customize the colors and appearance of the light and dark modes.
 ### How It Works
