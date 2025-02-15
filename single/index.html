@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSS</title>
+  <style>
+    :root {
+      --bg-color: #f4f4f4;
+      --text-color: #333;
+      --container-bg: white;
+      --feed-bg: #fff;
+      --border-color: #ddd;
+      --link-color: #007BFF;
+      --date-color: #000;
+      --button-bg: #e0e0e0;
+      --button-text: #333;
+      --hover-bg: #f5f5f5;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode {
+      --bg-color: #1e1e1e;
+      --text-color: #f4f4f4;
+      --container-bg: #2a2a2a;
+      --feed-bg: #333;
+      --border-color: #555;
+      --link-color: #4aa8ff;
+      --date-color: #fff;
+      --button-bg: #444;
+      --button-text: #fff;
+      --hover-bg: #555;
+      --shadow: rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--container-bg);
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px var(--shadow);
+      transition: background-color 0.3s, box-shadow 0.3s;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .input-container {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-button, .add-button, #custom-url {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      padding: 12px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: background-color 0.3s;
+      font-size: 1rem;
+    }
+
+    #custom-url {
+      padding: 10px;
+      width: 250px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      margin-left: 8px;
+    }
+
+    .filter-button:hover, .add-button:hover, #custom-url:focus {
+      background-color: var(--hover-bg);
+    }
+
+    .filter-button:focus, .add-button:focus {
+      outline: none;
+      border: 2px solid var(--link-color);
+    }
+
+    .feed-item {
+      border-bottom: 1px solid var(--border-color);
+      padding: 18px;
+      margin: 12px 0;
+      background: var(--feed-bg);
+      border-radius: 8px;
+      transition: background-color 0.3s;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .feed-item a {
+      text-decoration: none;
+      color: var(--link-color);
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    .feed-item a:hover {
+      color: #0056b3;
+    }
+
+    .feed-item .date {
+      font-size: 0.9rem;
+      color: var(--date-color);
+      margin-top: 8px;
+      opacity: 0.7;
+    }
+
+    .toggle-button {
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      font-size: 1.5rem;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle-button:hover {
+      background-color: var(--hover-bg);
+    }
+
+    /* Fade in animation */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .input-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      #custom-url {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .filter-button, .add-button, #custom-url {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+      }
+
+      .toggle-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .filter-button, .add-button {
+        width: 100%;
+      }
+
+      .toggle-button {
+        margin-bottom: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .filter-button, .add-button, #custom-url {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+      }
+
+      .feed-item {
+        font-size: 0.95rem;
+      }
+
+      .feed-item a {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body onload="loadTheme()">
+<div class="toggle-container">
+  <button class="toggle-button" onclick="toggleTheme()">☀️</button>
+  <div class="input-container">
+    <input type="text" id="custom-url" placeholder="Eigene RSS-URL eingeben">
+    <button class="add-button" onclick="addCustomFeed()">Hinzufügen</button>
+    <select id="rss-source" class="filter-button" onchange="fetchRSS()"></select>
+    <select id="week-filter" class="filter-button" onchange="fetchRSS()">
+      <option value="7">Letzte Woche</option>
+      <option value="14">Letzte zwei Wochen</option>
+      <option value="30">Letzter Monat</option>
+      <option value="0">Gesamte Zeit</option>
+    </select>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Neueste Nachrichten</h1>
+  <div id="rss-feed"></div>
+</div>
+
+<script>
+  const rssFeeds = {
+    'BBC News': 'https://feeds.bbci.co.uk/news/rss.xml',
+    'CNN': 'http://rss.cnn.com/rss/edition.rss',
+    'Al Jazeera': 'https://www.aljazeera.com/xml/rss/all.xml',
+    'Reuters': 'https://www.reutersagency.com/feed/?best-topics=world'
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    populateRSSDropdown();
+    fetchRSS();
+    loadTheme();
+  });
+
+  function populateRSSDropdown() {
+    const rssDropdown = document.getElementById('rss-source');
+    rssDropdown.innerHTML = '';
+    for (const [name, url] of Object.entries(rssFeeds)) {
+      const option = document.createElement('option');
+      option.value = url;
+      option.textContent = name;
+      rssDropdown.appendChild(option);
+    }
+  }
+
+  function addCustomFeed() {
+    const customUrl = document.getElementById('custom-url').value.trim();
+    if (customUrl) {
+      const rssDropdown = document.getElementById('rss-source');
+      const customOption = document.createElement('option');
+      customOption.value = customUrl;
+      customOption.textContent = customUrl;
+      rssDropdown.appendChild(customOption);
+      rssDropdown.value = customUrl;
+      fetchRSS();
+    }
+  }
+
+  function fetchRSS() {
+    const rssUrl = document.getElementById('rss-source').value;
+    const weekFilter = document.getElementById('week-filter').value;
+    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`)
+            .then(response => response.json())
+            .then(data => parseRSS(data.contents, weekFilter))
+            .catch(() => {
+              console.error("RSS-Feed konnte nicht geladen werden.");
+            });
+  }
+
+  function parseRSS(rssText, weekFilter) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(rssText, 'text/xml');
+    const items = xmlDoc.querySelectorAll('item');
+    const rssFeed = document.getElementById('rss-feed');
+    rssFeed.innerHTML = '';
+    const now = new Date();
+    const filterDays = parseInt(weekFilter);
+
+    // Sort the items by pubDate in descending order
+    const sortedItems = Array.from(items).sort((a, b) => {
+      const dateA = new Date(a.querySelector('pubDate')?.textContent);
+      const dateB = new Date(b.querySelector('pubDate')?.textContent);
+      return dateB - dateA; // Sort in descending order (newest first)
+    });
+
+    // Display sorted feed items
+    sortedItems.forEach(item => {
+      const title = item.querySelector('title')?.textContent || "Kein Titel";
+      const link = item.querySelector('link')?.textContent || "#";
+      const pubDateText = item.querySelector('pubDate')?.textContent;
+      const pubDate = pubDateText ? new Date(pubDateText) : new Date();
+      if (filterDays === 0 || (now - pubDate) / (1000 * 60 * 60 * 24) <= filterDays) {
+        const feedItem = document.createElement('div');
+        feedItem.className = 'feed-item';
+        feedItem.innerHTML = `<a href="${link}" target="_blank">${title}</a><div class="date">${pubDate.toDateString()}</div>`;
+        rssFeed.appendChild(feedItem);
+      }
+    });
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    document.querySelector('.toggle-button').textContent = isDarkMode ? '🌙' : '☀️';
+  }
+
+  function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.toggle-button').textContent = '🌙';
+    }
+  }
+</script>
+</body>
+</html>
