@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--Refactored version that is in seperate files-->
+<!--suppress HtmlFormInputWithoutLabel -->
+<html lang="de">
+<link rel="stylesheet" href="style.css">
+<head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>RSS</title>
+</head>
+<body onload="loadTheme()">
+<div class="toggle-container">
+    <button class="toggle-button" onclick="toggleTheme()">☀️</button>
+    <div class="input-container">
+        <input id="custom-url" placeholder="Eigene RSS-URL eingeben" type="text">
+        <button class="add-button" onclick="addCustomFeed()">Hinzufügen</button>
+        <select class="filter-button" id="rss-source" onchange="fetchRSS()"></select>
+        <select class="filter-button" id="week-filter" onchange="fetchRSS()">
+            <option value="7">Letzte Woche</option>
+            <option value="14">Letzte zwei Wochen</option>
+            <option value="30">Letzter Monat</option>
+            <option value="0">Gesamte Zeit</option>
+        </select>
+    </div>
+</div>
+<div class="container">
+    <h1>Neueste Nachrichten</h1>
+    <div id="rss-feed"></div>
+</div>
+<script src="script.js" async defer></script>
