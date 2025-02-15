@@ -13,7 +13,7 @@ This is a simple RSS feed reader that allows you to view and filter news article
 - **Responsive Design**: Works well on both mobile and desktop devices.
 
 ## Setup
-
+- Idk just open the [URL](https://zockerkatze.github.io/rssparser/)
 ### Prerequisites
 - A modern browser that supports JavaScript and CSS variables.
 - An active internet connection to fetch the RSS feed data.
