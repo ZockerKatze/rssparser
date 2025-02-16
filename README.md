@@ -3,7 +3,6 @@
 This is a simple RSS feed reader that allows you to view and filter news articles based on a selected time period. It also includes a dark mode toggle for a better reading experience.
 So i developed this incase of reading RSS with this, i made this for a server in the start but i made this a actual applet you can launch in your browser to check news!
 
-## This is outdated!
 ## Features
 - **Dark Mode Toggle**: Switch between light and dark themes.
 - **RSS Feed Fetching**: Fetches RSS feed from an external URL.
